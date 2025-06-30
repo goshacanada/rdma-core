@@ -1,0 +1,12 @@
+CXI_1.0 {
+	global:
+		cxidv_query_device;
+		cxidv_query_mr;
+		cxidv_query_qp;
+		cxidv_method1;
+		cxidv_method2;
+		cxidv_method3;
+		cxidv_is_supported;
+		cxidv_get_version;
+	local: *;
+};
