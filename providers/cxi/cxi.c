@@ -54,8 +54,8 @@ static struct verbs_context *cxi_alloc_context(struct ibv_device *vdev,
 					       int cmd_fd,
 					       void *private_data)
 {
-	struct cxi_alloc_ucontext_resp resp = {};
-	struct cxi_alloc_ucontext_cmd cmd = {};
+	struct cxi_ibv_alloc_ucontext_resp resp = {};
+	struct cxi_ibv_alloc_ucontext_cmd cmd = {};
 	struct cxi_context *ctx;
 
 	ctx = verbs_init_and_alloc_context(vdev, cmd_fd, ctx, ibvctx,

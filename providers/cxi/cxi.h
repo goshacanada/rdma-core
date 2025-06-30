@@ -13,7 +13,6 @@
 #include <infiniband/driver.h>
 #include <util/udma_barrier.h>
 
-#include "cxi-abi.h"
 #include "cxidv.h"
 
 struct cxi_device {

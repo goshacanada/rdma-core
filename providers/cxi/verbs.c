@@ -17,6 +17,7 @@
 #include <util/compiler.h>
 #include <util/mmio.h>
 #include <util/util.h>
+#include <rdma/ib_user_ioctl_cmds.h>
 
 #include "cxi.h"
 #include "cxidv.h"
@@ -96,7 +97,7 @@ int cxi_query_device_ctx(struct cxi_context *ctx)
 
 struct ibv_pd *cxi_alloc_pd(struct ibv_context *context)
 {
-	struct cxi_alloc_pd_resp resp = {};
+	struct cxi_ibv_alloc_pd_resp resp = {};
 	struct cxi_pd *pd;
 
 	pd = calloc(1, sizeof(*pd));
@@ -129,8 +130,8 @@ int cxi_dealloc_pd(struct ibv_pd *pd)
 struct ibv_mr *cxi_reg_mr(struct ibv_pd *pd, void *addr, size_t length,
 			  int access)
 {
-	struct cxi_reg_mr_resp resp = {};
-	struct cxi_reg_mr_cmd cmd = {};
+	struct cxi_ibv_reg_mr_resp resp = {};
+	struct cxi_ibv_reg_mr_cmd cmd = {};
 	struct cxi_mr *mr;
 	int ret;
 
@@ -172,8 +173,8 @@ struct ibv_cq *cxi_create_cq(struct ibv_context *context, int cqe,
 			     struct ibv_comp_channel *channel,
 			     int comp_vector)
 {
-	struct cxi_create_cq_resp resp = {};
-	struct cxi_create_cq_cmd cmd = {};
+	struct cxi_ibv_create_cq_resp resp = {};
+	struct cxi_ibv_create_cq_cmd cmd = {};
 	struct cxi_cq *cq;
 	int ret;
 
@@ -203,8 +204,8 @@ struct ibv_cq *cxi_create_cq(struct ibv_context *context, int cqe,
 struct ibv_cq_ex *cxi_create_cq_ex(struct ibv_context *context,
 				   struct ibv_cq_init_attr_ex *cq_attr)
 {
-	struct cxi_create_cq_resp resp = {};
-	struct cxi_create_cq_cmd cmd = {};
+	struct cxi_ibv_create_cq_resp resp = {};
+	struct cxi_ibv_create_cq_cmd cmd = {};
 	struct cxi_cq *cq;
 	int ret;
 
@@ -264,8 +265,8 @@ void cxi_cq_event(struct ibv_cq *cq)
 struct ibv_qp *cxi_create_qp(struct ibv_pd *pd,
 			     struct ibv_qp_init_attr *attr)
 {
-	struct cxi_create_qp_resp resp = {};
-	struct cxi_create_qp_cmd cmd = {};
+	struct cxi_ibv_create_qp_resp resp = {};
+	struct cxi_ibv_create_qp_cmd cmd = {};
 	struct cxi_qp *qp;
 	int ret;
 
@@ -301,8 +302,8 @@ struct ibv_qp *cxi_create_qp(struct ibv_pd *pd,
 struct ibv_qp *cxi_create_qp_ex(struct ibv_context *context,
 				struct ibv_qp_init_attr_ex *qp_init_attr_ex)
 {
-	struct cxi_create_qp_resp resp = {};
-	struct cxi_create_qp_cmd cmd = {};
+	struct cxi_ibv_create_qp_resp resp = {};
+	struct cxi_ibv_create_qp_cmd cmd = {};
 	struct cxi_qp *qp;
 	int ret;
 
@@ -448,7 +449,7 @@ int cxidv_method1(struct ibv_context *context,
 		  uint32_t inlen)
 {
 	DECLARE_COMMAND_BUFFER(cmd, CXI_IB_OBJECT_GENERIC, CXI_IB_METHOD_1, 5);
-	struct cxi_method1_resp resp = {};
+	struct cxi_ibv_method1_resp resp = {};
 	int ret;
 
 	if (!attr || inlen < sizeof(*attr))
@@ -480,7 +481,7 @@ int cxidv_method2(struct ibv_mr *mr,
 		  uint32_t inlen)
 {
 	DECLARE_COMMAND_BUFFER(cmd, CXI_IB_OBJECT_GENERIC, CXI_IB_METHOD_2, 5);
-	struct cxi_method2_resp resp = {};
+	struct cxi_ibv_method2_resp resp = {};
 	int ret;
 
 	if (!attr || inlen < sizeof(*attr))
@@ -511,7 +512,7 @@ int cxidv_method3(struct ibv_qp *qp,
 		  uint32_t inlen)
 {
 	DECLARE_COMMAND_BUFFER(cmd, CXI_IB_OBJECT_GENERIC, CXI_IB_METHOD_3, 6);
-	struct cxi_method3_resp resp = {};
+	struct cxi_ibv_method3_resp resp = {};
 	int ret;
 
 	if (!attr || inlen < sizeof(*attr))

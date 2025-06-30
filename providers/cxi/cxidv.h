@@ -11,12 +11,141 @@
 #include <stdbool.h>
 
 #include <infiniband/verbs.h>
+#include <rdma/ib_user_ioctl_cmds.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* CXI Direct Verbs - Vendor-specific extensions */
+
+/* Forward declarations of kernel UAPI structures */
+struct cxi_ibv_alloc_ucontext_cmd {
+	uint32_t comp_mask;
+	uint8_t reserved_20[4];
+};
+
+struct cxi_ibv_alloc_ucontext_resp {
+	uint32_t comp_mask;
+	uint16_t uarn;
+	uint8_t reserved_22[6];
+};
+
+struct cxi_ibv_alloc_pd_resp {
+	uint32_t comp_mask;
+	uint16_t pdn;
+	uint8_t reserved_22[6];
+};
+
+struct cxi_ibv_create_cq_cmd {
+	uint32_t comp_mask;
+	uint32_t cq_depth;
+	uint16_t eqn;
+	uint8_t reserved_26[6];
+};
+
+struct cxi_ibv_create_cq_resp {
+	uint32_t comp_mask;
+	uint16_t cq_idx;
+	uint16_t actual_depth;
+	uint32_t db_off;
+	uint8_t reserved_30[4];
+};
+
+struct cxi_ibv_create_qp_cmd {
+	uint32_t comp_mask;
+	uint32_t sq_depth;
+	uint32_t rq_depth;
+	uint16_t send_cq_idx;
+	uint16_t recv_cq_idx;
+	uint8_t reserved_34[4];
+};
+
+struct cxi_ibv_create_qp_resp {
+	uint32_t comp_mask;
+	uint32_t qp_handle;
+	uint32_t qp_num;
+	uint32_t sq_db_offset;
+	uint32_t rq_db_offset;
+	uint8_t reserved_38[4];
+};
+
+struct cxi_ibv_reg_mr_cmd {
+	uint32_t comp_mask;
+	uint64_t start __attribute__((aligned(8)));
+	uint64_t length __attribute__((aligned(8)));
+	uint64_t virt_addr __attribute__((aligned(8)));
+	uint32_t access_flags;
+	uint8_t reserved_44[4];
+};
+
+struct cxi_ibv_reg_mr_resp {
+	uint32_t comp_mask;
+	uint32_t l_key;
+	uint32_t r_key;
+	uint8_t reserved_30[4];
+};
+
+struct cxi_ibv_method1_resp {
+	uint32_t comp_mask;
+	uint32_t nic_addr;
+	uint32_t pid_granule;
+	uint32_t pid_count;
+	uint32_t pid_bits;
+	uint32_t min_free_shift;
+	uint8_t reserved_48[4];
+};
+
+struct cxi_ibv_method2_resp {
+	uint32_t comp_mask;
+	uint32_t md_handle;
+	uint64_t iova __attribute__((aligned(8)));
+	uint64_t length __attribute__((aligned(8)));
+	uint32_t access_flags;
+	uint8_t reserved_54[4];
+};
+
+struct cxi_ibv_method3_resp {
+	uint32_t comp_mask;
+	uint32_t txq_handle;
+	uint32_t tgq_handle;
+	uint32_t cmdq_handle;
+	uint32_t eq_handle;
+	uint32_t state;
+	uint8_t reserved_50[4];
+};
+
+/* Vendor-specific method and attribute IDs */
+enum {
+	CXI_IB_ATTR_METHOD1_RESP_NIC_ADDR = (1U << 29), /* UVERBS_ID_NS_SHIFT */
+	CXI_IB_ATTR_METHOD1_RESP_PID_GRANULE,
+	CXI_IB_ATTR_METHOD1_RESP_PID_COUNT,
+	CXI_IB_ATTR_METHOD1_RESP_PID_BITS,
+	CXI_IB_ATTR_METHOD1_RESP_MIN_FREE_SHIFT,
+
+	CXI_IB_ATTR_METHOD2_MR_HANDLE,
+	CXI_IB_ATTR_METHOD2_RESP_MD_HANDLE,
+	CXI_IB_ATTR_METHOD2_RESP_IOVA,
+	CXI_IB_ATTR_METHOD2_RESP_LENGTH,
+	CXI_IB_ATTR_METHOD2_RESP_ACCESS_FLAGS,
+
+	CXI_IB_ATTR_METHOD3_QP_HANDLE,
+	CXI_IB_ATTR_METHOD3_RESP_TXQ_HANDLE,
+	CXI_IB_ATTR_METHOD3_RESP_TGQ_HANDLE,
+	CXI_IB_ATTR_METHOD3_RESP_CMDQ_HANDLE,
+	CXI_IB_ATTR_METHOD3_RESP_EQ_HANDLE,
+	CXI_IB_ATTR_METHOD3_RESP_STATE,
+};
+
+enum {
+	CXI_IB_METHOD_1 = (1U << 29), /* UVERBS_ID_NS_SHIFT */
+	CXI_IB_METHOD_2,
+	CXI_IB_METHOD_3,
+};
+
+enum {
+	CXI_IB_OBJECT_GENERIC = (1U << 29), /* UVERBS_ID_NS_SHIFT */
+};
 
 /* CXI device capabilities flags */
 enum {

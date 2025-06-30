@@ -8,4 +8,6 @@ publish_headers(infiniband
 	cxidv.h
 )
 
+install(FILES "cxi.driver" DESTINATION "${CONFIG_DIR}")
+
 rdma_pkg_config("cxi" "libibverbs" "${CMAKE_THREAD_LIBS_INIT}")

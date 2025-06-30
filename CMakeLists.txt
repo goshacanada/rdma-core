@@ -725,6 +725,8 @@ add_subdirectory(librdmacm/man)
 # Providers
 if (HAVE_COHERENT_DMA)
 add_subdirectory(providers/bnxt_re)
+add_subdirectory(providers/cxi)
+add_subdirectory(providers/cxi/man)
 add_subdirectory(providers/cxgb4) # NO SPARSE
 add_subdirectory(providers/efa)
 add_subdirectory(providers/efa/man)
